@@ -3,7 +3,7 @@ name: 'EKS-Terraform-Plan'
 on:
   push:
     branches: 
-      - '**'
+      - develop
 
 
 env: 
