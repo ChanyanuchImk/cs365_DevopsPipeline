@@ -5,6 +5,9 @@ on:
     workflows: ["EKS-Terraform-Plan"]
     types:
       - completed
+    branches:
+      - main
+      - develop
 
 env:
   AWS_REGION: us-east-1
