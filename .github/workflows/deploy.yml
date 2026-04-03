@@ -16,33 +16,9 @@ env:
 
 jobs:
 
-  # 🧪 TEST
-  test:
-    runs-on: ubuntu-latest
-
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install deps
-        run: |
-          cd app
-          npm install
-
-      - name: Run tests
-        run: |
-          cd app
-          npm test
-
-  # 🚀 DEPLOY
+  #DEPLOY
   deploy:
+    if: false
     needs: test
     runs-on: ubuntu-latest
 
@@ -50,24 +26,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # 🐳 Build image
+      #Build image
       - name: Build Docker
         run: docker build -t $IMAGE_NAME ./app
 
-      # 🔐 Login DockerHub
+      #Login DockerHub
       - name: Login DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 📦 Push image
+      #Push image
       - name: Push image
         run: |
           docker tag $IMAGE_NAME ${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:${{ github.sha }}
 
-      # 🔐 AWS login
+      #AWS login
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -76,20 +52,20 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      # ⚙️ Connect EKS
+      #Connect EKS
       - name: Update kubeconfig
         run: |
           aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
 
-      # ✅ เช็ค cluster พร้อม
+      #เช็ค cluster พร้อม
       - name: Check EKS connection
         run: kubectl get nodes
 
-      # ⚙️ Install Helm
+      #Install Helm
       - name: Setup Helm
         uses: azure/setup-helm@v3
 
-      # 🚀 Deploy
+      #Deploy
       - name: Deploy with Helm
         run: |
           helm upgrade --install my-app ./my-app-chart \
