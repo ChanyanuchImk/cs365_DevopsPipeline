@@ -3,7 +3,7 @@ name: 'EKS-Terraform-Plan'
 on:
   push:
     branches: 
-      - develop
+      - main
 
 
 env: 
@@ -45,7 +45,7 @@ jobs:
           key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
           restore-keys: |
             ${{ runner.os }}-terraform-
-            
+
       - name: Debug AWS Identity
         run: aws sts get-caller-identity
 
