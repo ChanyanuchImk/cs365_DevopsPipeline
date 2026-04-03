@@ -20,6 +20,7 @@ jobs:
     name: Terraform ${{ github.event.inputs.action }}
     runs-on: ubuntu-latest
     environment: production
+    
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     defaults:
