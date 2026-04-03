@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Introduction</title>
+    <!-- Use Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Our Team Members</h1>
+            <p>Welcome to our simple introduction page.</p>
+        </header>
+
+        <!-- Form for adding new members -->
+        <form id="addMemberForm" class="add-member-form">
+            <div class="input-group">
+                <input type="text" id="nameInput" placeholder="Enter name (e.g., John Doe)" required>
+                <input type="text" id="roleInput" placeholder="Enter role (e.g., Designer)" required>
+                <button type="submit">Add Member</button>
+            </div>
+        </form>
+
+        <main class="grid-layout" id="memberGrid">
+            <!-- Member 1 -->
+            <div class="card">
+                <div class="card-image bg-gradient-1">
+                    <span class="initials">CI</span>
+                </div>
+                <div class="card-content">
+                    <h2>Chanyanuch Imkerd</h2>
+                    <p class="role">Team Member</p>
+                </div>
+            </div>
+
+            <!-- Member 2 -->
+            <div class="card">
+                <div class="card-image bg-gradient-2">
+                    <span class="initials">PN</span>
+                </div>
+                <div class="card-content">
+                    <h2>Peerada Ngamwongwirot</h2>
+                    <p class="role">Team Member</p>
+                </div>
+            </div>
+
+            <!-- Member 3 -->
+            <div class="card">
+                <div class="card-image bg-gradient-3">
+                    <span class="initials">PM</span>
+                </div>
+                <div class="card-content">
+                    <h2>Pakin Maneerat</h2>
+                    <p class="role">Team Member</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
