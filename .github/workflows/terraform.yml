@@ -17,10 +17,11 @@ permissions:
 
 jobs:
   terraform:
-    name: Terraform ${{ github.event.inputs.action }}
+    name: Terraform Apply
     runs-on: ubuntu-latest
     environment: production
-    
+
+    # ✅ รันเมื่อ plan ผ่านเท่านั้น
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     defaults:
@@ -36,9 +37,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.9.3
-          terraform_wrapper: true
 
-      # Optional: Enable caching to speed up init
       - name: Cache Terraform
         uses: actions/cache@v4
         with:
@@ -52,23 +51,9 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Format Check
-        run: terraform fmt -check -diff
-
       - name: Terraform Validate
         run: terraform validate
 
-      - name: Terraform Plan
-        if: ${{ github.event.inputs.action == 'plan' }}
-        run: |
-          terraform plan -var-file=${{ github.event.inputs.tfvars_file }} -input=false
-
+      # 🚀 APPLY จริง
       - name: Terraform Apply
-        if: ${{ github.event.inputs.action == 'apply' }}
-        run: |
-          terraform apply -auto-approve -var-file=${{ github.event.inputs.tfvars_file }} -input=false
-
-      - name: Terraform Destroy
-        if: ${{ github.event.inputs.action == 'destroy' }}
-        run: |
-          terraform destroy -auto-approve -var-file=${{ github.event.inputs.tfvars_file }} -input=false
+        run: terraform apply -auto-approve -var-file=dev.tfvars -input=false
