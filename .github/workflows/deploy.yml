@@ -18,8 +18,7 @@ jobs:
 
   #DEPLOY
   deploy:
-    if: false
-    needs: test
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -52,22 +51,28 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      #Connect EKS
-      - name: Update kubeconfig
-        run: |
-          aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+      - name: setup kubectl
+        uses: azure/setup-kubectl@v3
 
-      #เช็ค cluster พร้อม
-      - name: Check EKS connection
-        run: kubectl get nodes
-
-      #Install Helm
-      - name: Setup Helm
+      #Helm
+      - name: setup Helm
         uses: azure/setup-helm@v3
 
-      #Deploy
-      - name: Deploy with Helm
+      #EKS cluster
+      - name: update kubeconfig
         run: |
-          helm upgrade --install my-app ./my-app-chart \
+          aws eks update-kubeconfig \
+            --region $AWS_REGION \
+            --name $EKS_CLUSTER_NAME
+
+      #Helm Deply
+      - name: Helm Deploy
+        run: |
+          helm upgrade --install my-app ./helm/my-app \
             --set image.repository=${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME \
-            --set image.tag=${{ github.sha }}
+            --set image.tag=${{ github.sha }} \
+            --wait
+
+      #Verify deployment
+      - name: Verify deployment
+        run: kubectl get pods
