@@ -7,11 +7,7 @@ terraform {
     }
   }
   backend "s3" {
-<<<<<<< develop
     bucket         = "cs366-tf-state"
-=======
-    bucket         = "chanyanuch-tf-state"
->>>>>>> main
     region         = "us-east-1"
     key            = "eks/terraform.tfstate"
     dynamodb_table = "Lock-Files"
