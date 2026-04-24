@@ -20,9 +20,18 @@ permissions:
 
 jobs:
   terraform:
+<<<<<<< develop
     name: Terraform Apply
     runs-on: ubuntu-latest
     environment: production
+=======
+    if: false
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    environment: production
+
+    #รันเมื่อ plan ผ่านเท่านั้น
+>>>>>>> main
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     defaults:
