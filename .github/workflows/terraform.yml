@@ -50,7 +50,13 @@ jobs:
             ${{ runner.os }}-terraform-
 
       - name: Terraform Init
-        run: terraform init
+        run: |
+          terraform init \
+            -input=false \
+            -backend-config="bucket=cs366-tf-state" \
+            -backend-config="key=eks/terraform.tfstate" \
+            -backend-config="region=us-east-1" \
+            -backend-config="dynamodb_table=Lock-Files"
 
       - name: Terraform Validate
         run: terraform validate
