@@ -1,6 +1,7 @@
 name: CI/CD to EKS (Helm)
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["EKS-Creation-Using-Terraform"]
     types:

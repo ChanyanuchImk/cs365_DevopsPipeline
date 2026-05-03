@@ -1,6 +1,7 @@
 name: 'EKS-Creation-Using-Terraform'
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["EKS-Terraform-Plan"]
     types:
