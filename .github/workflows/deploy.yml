@@ -11,7 +11,7 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  EKS_CLUSTER_NAME: my-eks-cluster
+  EKS_CLUSTER_NAME: dev-ap-medium-eks-cluster
   IMAGE_NAME: my-app
 
 jobs:
@@ -68,7 +68,7 @@ jobs:
       #Helm Deply
       - name: Helm Deploy
         run: |
-          helm upgrade --install my-app ./helm/my-app \
+          helm upgrade --install my-app ./my-app-chart \
             --set image.repository=${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME \
             --set image.tag=${{ github.sha }} \
             --wait
