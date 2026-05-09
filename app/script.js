@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Create the new card element
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className = 'card new-card';
         card.innerHTML = `
             <div class="card-image ${randomGradient}">
                 <span class="initials">${initials}</span>
@@ -53,3 +53,4 @@ document.addEventListener('DOMContentLoaded', () => {
         nameInput.focus();
     });
 });
+
