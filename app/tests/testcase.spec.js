@@ -5,7 +5,7 @@ const path = require('path');
 const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
 const scriptCode = fs.readFileSync(path.resolve(__dirname, '../script.js'), 'utf8');
 
-describe('Member Introduction Web App (Jest Test)', () => {
+describe('TU Rangsit Facilities Web App (Jest Test)', () => {
     beforeEach(() => {
         // 1. นำโครงสร้าง HTML มาใส่ใน JSDOM จำลองสภาพแวดล้อมเบราว์เซอร์
         document.documentElement.innerHTML = html.toString();
@@ -18,58 +18,55 @@ describe('Member Introduction Web App (Jest Test)', () => {
         document.dispatchEvent(event);
     });
 
-    // 🟢 1. Test: เพิ่มสมาชิกใหม่สำเร็จ
-    test('ควรจะเพิ่มสมาชิกใหม่เข้าไปในการ์ดได้สำเร็จ (Happy Path)', () => {
-        // กรอกข้อมูลโดยอ้างอิงไอดี
-        document.getElementById('nameInput').value = 'John Developer';
-        document.getElementById('roleInput').value = 'Senior Engineer';
-        
-        // จำลองการกดปุ่ม Submit ฟอร์ม
-        document.getElementById('addMemberForm').dispatchEvent(new Event('submit', { cancelable: true }));
-
-        // ดึงตัวการ์ดทั้งหมดเพื่อเช็กการเปลี่ยนแปลง
+    // 🟢 1. Test: การเปิด Modal ดูรายละเอียด
+    test('ควรจะแสดงข้อมูลบน Modal ตรงกับการ์ดที่กด', () => {
         const cards = document.querySelectorAll('.card');
-        const newCard = cards[cards.length - 1]; // การ์ดที่เพิ่งถูกเพิ่มไป
+        const firstCard = cards[0]; // Puey Library
+        const modal = document.getElementById('facilityModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalCategory = document.getElementById('modalCategory');
 
-        // ตรวจสอบ (EXPECT) แบบฉบับของ Jest เลยครับ
-        expect(cards.length).toBe(4); // ของเดิมมี 3 ใบ การ์ดใหม่ต้องเป็นใบที่ 4
-        expect(newCard.querySelector('.initials').textContent).toBe('JD'); // J.D. จาก John Developer
-        expect(newCard.querySelector('h2').textContent).toBe('John Developer');
-        expect(newCard.querySelector('.role').textContent).toBe('Senior Engineer');
+        // จำลองการคลิกที่การ์ดใบแรก
+        firstCard.dispatchEvent(new Event('click'));
 
-        // ฟอร์มควรจะล้างค่า (Empty Input)
-        expect(document.getElementById('nameInput').value).toBe('');
-        expect(document.getElementById('roleInput').value).toBe('');
+        // คาดหวังว่า Modal จะเปิดขึ้นมา (มี class show)
+        expect(modal.classList.contains('show')).toBe(true);
+        // คาดหวังว่าชื่อตรงกัน
+        expect(modalTitle.textContent).toBe('Puey Ungphakorn Library');
+        expect(modalCategory.textContent).toBe('Library');
     });
 
-    // 🔴 2. Test: ไม่ใส่ name แล้วจะแจ้งเตือน
-    test('ควรจะบล็อกการเพิ่มข้อมูลหากไม่กรอกชื่อ (Empty Name Validation)', () => {
-        // กรอกตั้งใจกรอกแค่ Role แต่เว้นช่อง Name ว่างไว้
-        document.getElementById('roleInput').value = 'Designer';
-        document.getElementById('nameInput').value = '';
-
-        // ถ้า Name ไม่ถูกกรอก script.js ตั้งใจ Return ไม่อนุญาตให้ทำงานไปถึงการสร้างการ์ด
-        document.getElementById('addMemberForm').dispatchEvent(new Event('submit'));
-
+    // 🟢 2. Test: ปิด Modal
+    test('ควรจะปิด Modal ได้เมื่อกดปุ่มกากบาท', () => {
         const cards = document.querySelectorAll('.card');
-        
-        // ตรวจสอบ (EXPECT) 
-        expect(cards.length).toBe(3); // จำนวนต้องเท่าเดิม ไม่มีอะไรเพิ่มเข้าไป
-        
-        // หมายเหตุ: การเช็ก Validation Message ว่าเบราว์เซอร์แจ้งเตือนคำว่าอะไร (Native HTML5 Popup)
-        // จริงๆ แล้ว Jest/JSDOM ไม่ซัพพอร์ตการอ่าน Popup เบราว์เซอร์เพราะมันไม่มีหน้าต่างจริงๆ 
-        // เราจึงตาวดได้แค่จากจำนวนว่า Logic เรายังคงต้านรอด ไม่สร้างการ์ดมั่วซั่วเมื่อช่องว่าง
-        const isNameEmpty = document.getElementById('nameInput').validity.valueMissing;
-        expect(isNameEmpty).toBe(true); // ยืนยันว่าระบบจำได้ว่าช่อง Name ผิดจริงและว่างเปล่า
+        const modal = document.getElementById('facilityModal');
+        const closeBtn = document.querySelector('.close-button');
+
+        cards[0].dispatchEvent(new Event('click'));
+        expect(modal.classList.contains('show')).toBe(true);
+
+        // คลิกปุ่มปิด
+        closeBtn.dispatchEvent(new Event('click'));
+        expect(modal.classList.contains('show')).toBe(false);
     });
 
-    // 🟠 3. Test: Responsive Web (แสดงผลมือถือ)
+    // 🟢 3. Test: ค้นหาสถานที่
+    test('ควรจะกรองสถานที่ที่ค้นหาได้อย่างถูกต้อง', () => {
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.card');
+
+        // ค้นหาคำว่า "SC"
+        searchInput.value = 'sc';
+        searchInput.dispatchEvent(new Event('input'));
+
+        // คาดหวังว่าใบแรก (Puey) จะถูกซ่อน และใบที่ 2 (SC) จะแสดง
+        expect(cards[0].style.display).toBe('none');
+        expect(cards[1].style.display).toBe('flex'); // ตรงกับ SC Building
+        expect(cards[2].style.display).toBe('none');
+    });
+
+    // 🟠 4. Test: Responsive Web (แสดงผลมือถือ)
     test('Responsive Web: JSDOM ไม่สามารถเทสต์แบบ Visual เช็ก Responsive Flex ได้', () => {
-        // *จุดเด่นและจุดด้อย*
-        // Jest ทำมาเพื่อเทสต์ "โลจิก" (Logic testing) หรือความถูกต้องของแอปพลิเคชัน 
-        // แต่มันเป็นสภาพแวดล้อมที่ "มองไม่เห็น" (Headless / ไม่เรนเดอร์ CSS)
-        // ถ้าคุณต้องการเทสต์ว่ามือถือเรียงกล่องแบบแนวตั้งได้ไหม (Column vs Row)
-        // Playwright (ที่ใช้ก่อนหน้านี้) ตัวน้้นจะตอบโจทย์ Responsive เชิงรูปร่างมากกว่าครับ
         expect(true).toBe(true);
     });
 });

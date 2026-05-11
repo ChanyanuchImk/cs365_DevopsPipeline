@@ -1,56 +1,44 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('addMemberForm');
-    const nameInput = document.getElementById('nameInput');
-    const roleInput = document.getElementById('roleInput');
-    const memberGrid = document.getElementById('memberGrid');
+    const cards = document.querySelectorAll('.card');
+    const modal = document.getElementById('facilityModal');
+    const closeButton = document.querySelector('.close-button');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalCategory = document.getElementById('modalCategory');
+    const modalDescription = document.getElementById('modalDescription');
+    const searchInput = document.getElementById('searchInput');
 
-    // Array of gradient classes we created in CSS
-    const gradients = ['bg-gradient-1', 'bg-gradient-2', 'bg-gradient-3'];
-
-    // Helper to get initials from name (e.g., "John Doe" -> "JD")
-    function getInitials(name) {
-        const words = name.trim().split(' ');
-        if (words.length >= 2) {
-            return (words[0][0] + words[1][0]).toUpperCase();
-        } else if (words.length === 1 && words[0] !== '') {
-            return words[0].substring(0, 2).toUpperCase();
-        }
-        return '?';
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            cards.forEach(card => {
+                const title = card.dataset.title.toLowerCase();
+                const category = card.dataset.category.toLowerCase();
+                if (title.includes(searchTerm) || category.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
     }
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault(); // Prevent page refresh
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            modalTitle.textContent = card.dataset.title;
+            modalCategory.textContent = card.dataset.category;
+            modalDescription.textContent = card.dataset.desc;
+            modal.classList.add('show');
+        });
+    });
 
-        const name = nameInput.value.trim();
-        const role = roleInput.value.trim();
+    closeButton.addEventListener('click', () => {
+        modal.classList.remove('show');
+    });
 
-        if (name === '' || role === '') return;
-
-        const initials = getInitials(name);
-        
-        // Pick a random gradient class for the background
-        const randomGradient = gradients[Math.floor(Math.random() * gradients.length)];
-
-        // Create the new card element
-        const card = document.createElement('div');
-        card.className = 'card new-card';
-        card.innerHTML = `
-            <div class="card-image ${randomGradient}">
-                <span class="initials">${initials}</span>
-            </div>
-            <div class="card-content">
-                <h2>${name}</h2>
-                <p class="role">${role}</p>
-            </div>
-        `;
-
-        // Add the new card to the grid
-        memberGrid.appendChild(card);
-
-        // Clear input fields
-        nameInput.value = '';
-        roleInput.value = '';
-        nameInput.focus();
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.classList.remove('show');
+        }
     });
 });
-

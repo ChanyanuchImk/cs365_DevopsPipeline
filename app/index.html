@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Member Introduction</title>
+    <title>TU Rangsit Facilities</title>
     <!-- Use Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,54 +13,60 @@
 <body>
     <div class="container">
         <header>
-            <h1>Our Team Members</h1>
-            <p>Welcome to our interactive team introduction page.</p>
+            <h1>TU Rangsit Facilities</h1>
+            <p>Explore facilities at Thammasat University, Rangsit Campus.</p>
         </header>
 
-        <!-- Form for adding new members -->
-        <form id="addMemberForm" class="add-member-form">
-            <div class="input-group">
-                <input type="text" id="nameInput" placeholder="Enter name (e.g., John Doe)" required>
-                <input type="text" id="roleInput" placeholder="Enter role (e.g., Designer)" required>
-                <button type="submit">Add Member</button>
-            </div>
-        </form>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search facilities or categories...">
+        </div>
 
         <main class="grid-layout" id="memberGrid">
-            <!-- Member 1 -->
-            <div class="card">
+            <!-- Facility 1 -->
+            <div class="card" data-title="Puey Ungphakorn Library" data-category="Library" data-desc="A central hub for learning and research. Featuring an eco-friendly design, extensive book collections, and quiet zones for focused studying.">
                 <div class="card-image bg-gradient-1">
-                    <span class="initials">CI</span>
+                    <span class="initials">PL</span>
                 </div>
                 <div class="card-content">
-                    <h2>Chanyanuch Imkerd</h2>
-                    <p class="role">Team Member</p>
+                    <h2>Puey Ungphakorn Library</h2>
+                    <p class="role">Library</p>
                 </div>
             </div>
 
-            <!-- Member 2 -->
-            <div class="card">
+            <!-- Facility 2 -->
+            <div class="card" data-title="SC Building" data-category="Study Area" data-desc="The main center for social sciences and general education, offering various lecture halls, study rooms, and vibrant student activity spaces.">
                 <div class="card-image bg-gradient-2">
-                    <span class="initials">PN</span>
+                    <span class="initials">SC</span>
                 </div>
                 <div class="card-content">
-                    <h2>Peerada Ngamwongwirot</h2>
-                    <p class="role">Team Member</p>
+                    <h2>SC Building</h2>
+                    <p class="role">Study Area</p>
                 </div>
             </div>
 
-            <!-- Member 3 -->
-            <div class="card">
+            <!-- Facility 3 -->
+            <div class="card" data-title="Main Stadium" data-category="Sports Complex" data-desc="The primary sports facility for university events, equipped with a standard football pitch, athletic tracks, and seating for spectators.">
                 <div class="card-image bg-gradient-3">
-                    <span class="initials">PM</span>
+                    <span class="initials">MS</span>
                 </div>
                 <div class="card-content">
-                    <h2>Pakin Maneerat</h2>
-                    <p class="role">Team Member</p>
+                    <h2>Main Stadium</h2>
+                    <p class="role">Sports Complex</p>
                 </div>
             </div>
         </main>
     </div>
+
+    <!-- Modal -->
+    <div id="facilityModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modalTitle">Facility Name</h2>
+            <p id="modalCategory" class="role">Category</p>
+            <p id="modalDescription" class="description">Facility Description</p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
