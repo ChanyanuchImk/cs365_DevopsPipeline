@@ -1,9 +1,9 @@
 replicaCount: 2
 
 image:
-  repository: ""   # 👈 จะถูก inject จาก GitHub Actions
+  repository: ""   
   pullPolicy: IfNotPresent
-  tag: ""          # 👈 จะใช้ commit SHA
+  tag: ""         
 
 service:
   type: LoadBalancer
