@@ -27,8 +27,8 @@ body {
     align-items: center;
     /* subtle background decoration */
     background-image: 
-        radial-gradient(circle at 15% 50%, rgba(247, 85, 190, 0.638) 0%, transparent 50%),
-        radial-gradient(circle at 85% 30%, rgba(252, 58, 194, 0.632) 0%, transparent 50%);
+        radial-gradient(circle at 15% 50%, rgba(156, 227, 57, 0.638) 0%, transparent 50%),
+        radial-gradient(circle at 85% 30%, rgba(58, 252, 119, 0.857) 0%, transparent 50%);
 }
 
 .container {
